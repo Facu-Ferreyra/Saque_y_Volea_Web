@@ -344,6 +344,12 @@ export function Footer() {
       <div className="wrap footer__bottom">
         <span>© {new Date().getFullYear()} {CLUB.fullName}</span>
         <span>{CLUB.address}</span>
+        <span>
+          Sitio realizado por{' '}
+          <a className="footer__credit" href="https://devff.tech" {...ext}>
+            devff.tech
+          </a>
+        </span>
       </div>
     </footer>
   )

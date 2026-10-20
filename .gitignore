@@ -2,8 +2,9 @@
 node_modules/
 dist/
 
-# Configuración local de herramientas (Claude Code, editores)
+# Configuración local de herramientas (Claude Code, editores, historial de análisis de diseño)
 .claude/
+.impeccable/
 .vscode/
 .DS_Store
 Thumbs.db

@@ -1060,6 +1060,13 @@ html {
   color: var(--muted);
   padding-right: calc(var(--gutter-r) + 80px); /* deja lugar al botón flotante */
 }
+.footer__credit {
+  color: var(--ink);
+  text-underline-offset: 3px;
+}
+.footer__credit:hover {
+  color: var(--accent);
+}
 
 /* ---------- BOTÓN FLOTANTE DE WHATSAPP ---------- */
 .wa-fab {
