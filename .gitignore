@@ -1,0 +1,13 @@
+# Dependencias y build (se regeneran con npm install / npm run build)
+node_modules/
+dist/
+
+# Configuración local de herramientas (Claude Code, editores)
+.claude/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Variables de entorno
+.env
+.env.*
