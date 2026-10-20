@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { CLUB, whatsappLink } from '../config.js'
 import { NAV_LINKS } from '../content.js'
-import { BallMark, Menu, Close } from './Icons.jsx'
+import { Menu, Close } from './Icons.jsx'
 
 /**
  * Barra de navegación fija.
@@ -31,10 +31,10 @@ export default function Nav() {
     <header className={`nav ${solid || open ? 'nav--solid' : ''}`}>
       <div className="nav__in">
         <a className="brand" href="#top" onClick={() => setOpen(false)} aria-label={`${CLUB.fullName}, ir al inicio`}>
-          <BallMark />
+          <img className="brand__mark" src="/marca.png" alt="" width="36" height="36" />
           <span className="brand__text">
             <span className="brand__name">
-              Saque <span className="lime">Y</span> Volea
+              Saque <span className="accent">Y</span> Volea
             </span>
             <span className="brand__city">{CLUB.city}</span>
           </span>
@@ -46,12 +46,12 @@ export default function Nav() {
               {l.label}
             </a>
           ))}
-          <a className="btn btn--lime nav__cta-mobile" href={whatsappLink('booking')} target="_blank" rel="noopener noreferrer">
+          <a className="btn btn--accent nav__cta-mobile" href={whatsappLink('booking')} target="_blank" rel="noopener noreferrer">
             Reservar turno
           </a>
         </nav>
 
-        <a className="btn btn--lime nav__cta" href={whatsappLink('booking')} target="_blank" rel="noopener noreferrer">
+        <a className="btn btn--accent nav__cta" href={whatsappLink('booking')} target="_blank" rel="noopener noreferrer">
           Reservar turno
         </a>
 

@@ -12,7 +12,7 @@ export const NAV_LINKS = [
 export const SERVICES = [
   {
     title: 'Canchas',
-    text: 'Tenis y pádel al aire libre, con superficie cuidada e iluminación para jugar hasta el cierre. Reservá por hora, cuando te quede cómodo.',
+    text: 'Tres canchas de tenis y una de pádel al aire libre, con iluminación para jugar hasta el cierre. Reservá por hora, cuando te quede cómodo.',
     cta: 'Ver horarios',
     href: '#contacto',
   },
@@ -39,14 +39,13 @@ export const CLASS_FEATURES = [
 
 // Fotos: guardalas en /public/fotos y completá `src` (ej. '/fotos/cancha-principal.jpg').
 // Mientras `src` sea null se muestra un espacio reservado.
-export const CLASSES_PHOTO = { src: null, alt: 'Profesor dando clase de tenis de noche' }
+export const CLASSES_PHOTO = { src: '/fotos/canchas-tenis-2.webp', alt: 'Canchas de tenis del club con jugadores, al atardecer' }
 
+// size: lg (ancha), md (angosta), full (todo el ancho). Al lado de una lg va una md.
 export const GALLERY = [
-  { label: 'Cancha principal', text: 'Iluminada para jugar hasta el cierre', src: null, size: 'lg', tone: 'clay' },
-  { label: 'Pádel', text: 'Paredes de cristal y césped sintético', src: null, size: 'md', tone: 'blue' },
-  { label: 'El club', text: 'Un club de barrio en Escobar', src: null, size: 'md', tone: 'night' },
-  { label: 'El primer pique', text: 'Polvo de ladrillo en el aire', src: null, size: 'lg', tone: 'ball' },
-  { label: 'Raqueta lista', text: 'Alquilamos lo que te falte', src: null, size: 'full', tone: 'clay' },
+  { label: 'Canchas de tenis', text: 'Torres de luz para seguir jugando cuando baja el sol', src: '/fotos/canchas-tenis.webp', size: 'lg', tone: 'blue' },
+  { label: 'Para esperar tu turno', text: 'Mesas y sombra al lado de la cancha', src: '/fotos/descanso.webp', size: 'md', tone: 'night' },
+  { label: 'Vista aérea', text: 'Tres canchas de tenis y una de pádel', src: '/fotos/vista-aerea.webp', size: 'full', tone: 'blue' },
 ]
 
 // Reseñas de Google: son de personas reales. Lo correcto es pedirles permiso

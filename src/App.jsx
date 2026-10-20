@@ -12,6 +12,9 @@ export default function App() {
   return (
     <LazyMotion features={domAnimation} strict>
       <MotionConfig reducedMotion="user">
+        <a className="skip" href="#canchas">
+          Saltar al contenido
+        </a>
         <Nav />
         <main id="top">
           <Hero />

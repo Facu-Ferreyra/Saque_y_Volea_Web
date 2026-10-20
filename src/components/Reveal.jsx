@@ -1,7 +1,8 @@
 import { m } from 'motion/react'
 
 // Curva "ease-out" larga: arranca rápido y se apoya suave al final (sensación premium).
-const EASE = [0.22, 1, 0.36, 1]
+// Se exporta para que todas las animaciones de la página compartan la misma curva.
+export const EASE = [0.16, 1, 0.3, 1]
 
 /**
  * Hace aparecer su contenido (sube un poco + fade) la primera vez que entra en pantalla.

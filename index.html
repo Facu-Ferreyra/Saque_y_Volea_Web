@@ -5,12 +5,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <title>Club Saque y Volea · Tenis y pádel en Belén de Escobar</title>
     <meta name="description" content="Club de tenis y pádel en Belén de Escobar. Canchas iluminadas, clases y reservas por WhatsApp." />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Inter:wght@400;500;600&display=swap"
-    />
+    <!-- Color de la barra del navegador en el celular, según el tema del dispositivo -->
+    <meta name="theme-color" content="#050816" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#cfe2f6" media="(prefers-color-scheme: light)" />
+
+    <!-- Íconos: pestaña del navegador, pantalla de inicio del celular -->
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+    <!-- Vista previa al compartir el link (WhatsApp, Facebook, Instagram, X).
+         Las URLs tienen que ser absolutas: VITE_SITE_URL se define en el archivo .env -->
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="es_AR" />
+    <meta property="og:site_name" content="Club Saque y Volea" />
+    <meta property="og:title" content="Club Saque y Volea · Tenis y pádel en Belén de Escobar" />
+    <meta property="og:description" content="Canchas iluminadas, clases para todos los niveles y turnos por hora. Reservá por WhatsApp." />
+    <meta property="og:url" content="%VITE_SITE_URL%/" />
+    <meta property="og:image" content="%VITE_SITE_URL%/og-image.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Logo del Club Saque y Volea sobre una vista aérea de las canchas" />
+    <meta name="twitter:card" content="summary_large_image" />
   </head>
   <body>
     <div id="root"></div>

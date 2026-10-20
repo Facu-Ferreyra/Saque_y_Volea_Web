@@ -8,6 +8,6 @@ dist/
 .DS_Store
 Thumbs.db
 
-# Variables de entorno
-.env
-.env.*
+# Variables de entorno privadas (claves). El .env común es público y sí se sube.
+.env.local
+.env.*.local

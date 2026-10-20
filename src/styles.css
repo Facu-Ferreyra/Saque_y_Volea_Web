@@ -1,36 +1,76 @@
 /* Layout: nav fija transparente sobre el hero; debajo, secciones en una columna
-   centrada (máx. 1200px) sobre azul noche. Un solo "look" oscuro, a propósito. */
+   centrada (máx. 1200px).
+   Dos temas según el dispositivo: OSCURO = cancha de noche con reflectores (el de abajo)
+   y CLARO = cancha de día (el bloque prefers-color-scheme: light). Los componentes solo
+   usan estas variables, así que cambiar un color acá lo cambia en todo el sitio. */
 :root {
   color-scheme: dark;
 
-  /* Colores */
+  /* Colores: tema oscuro (cancha de noche) */
   --bg: #0a0f24;
   --bg-deep: #050816;
+  --hero-bg: var(--bg-deep);
   --surface: #0b1230;
   --surface-2: #101a3d;
+  --panel: rgba(11, 18, 48, 0.75); /* contenedor de las tarjetas de Canchas */
   --line: rgba(150, 170, 230, 0.14);
   --ink: #f2f5fb;
   --muted: #8f9cba;
-  --lime: #d4ff1a;
-  --lime-ink: #0c1200;
-
-  --ball: #dcef3c;
-  --ball-seam: #f8fbe8;
-  --paddle-face: #eef2f8;
-  --paddle-frame: #0b1426;
-  --paddle-hole: #8794ab;
-  --paddle-grip: #1a2440;
-  --paddle-grip-line: #33416a;
+  --ink-soft: #a9b4cc; /* texto secundario sobre fondos muy oscuros */
+  /* Colores del club (logo): azul y verde menta.
+     --accent: textos y líneas de acento · --accent-fill: fondo de botones · --accent-ink: texto sobre ese fondo */
+  --accent: #82c48e;
+  --accent-fill: #82c48e;
+  --accent-ink: #0a1f12;
+  --hover-tint: rgba(55, 72, 138, 0.28); /* azul del club, al pasar el mouse */
+  --ghost-border: rgba(242, 245, 251, 0.3);
+  --star-off: rgba(242, 245, 251, 0.2);
+  --nav-bg: rgba(5, 8, 22, 0.82);
+  --menu-bg: rgba(5, 8, 22, 0.97);
+  --shadow: rgba(0, 0, 0, 0.4);
+  --court-line: rgba(242, 245, 251, 0.2); /* líneas de la cancha del hero */
+  --lamp: #fff6d6; /* luz cálida de los reflectores */
+  --lamp-beam: rgba(255, 246, 214, 0.2);
 
   /* Tipografía */
-  --font-display: 'Archivo', 'Arial Narrow', Arial, sans-serif;
-  --font-body: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-display: 'Archivo Variable', 'Arial Narrow', Arial, sans-serif;
+  --font-body: 'Inter Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
 
   /* Medidas */
   --nav-h: 84px;
   --radius: 22px;
   --gutter-l: max(20px, env(safe-area-inset-left, 0px));
   --gutter-r: max(20px, env(safe-area-inset-right, 0px));
+}
+
+/* Tema claro: cancha de día. Se activa solo si el dispositivo está en modo claro.
+   El verde menta del logo no se lee sobre blanco, así que los textos de acento usan un verde
+   más oscuro y los botones toman el azul del club. */
+@media (prefers-color-scheme: light) {
+  :root {
+    color-scheme: light;
+    --bg: #f3f6fb;
+    --bg-deep: #e7eef8;
+    --hero-bg: linear-gradient(180deg, #cfe2f6 0%, #e6eff9 55%, #f3f6fb 100%); /* cielo de día */
+    --surface: #ffffff;
+    --surface-2: #e9eff8;
+    --panel: #ffffff;
+    --line: rgba(55, 72, 138, 0.16);
+    --ink: #141c3d;
+    --muted: #4b5675;
+    --ink-soft: #3b4669;
+    --accent: #2a7341;
+    --accent-fill: #37488a;
+    --accent-ink: #ffffff;
+    --hover-tint: rgba(55, 72, 138, 0.07);
+    --ghost-border: rgba(20, 28, 61, 0.28);
+    --star-off: rgba(20, 28, 61, 0.18);
+    --nav-bg: rgba(243, 246, 251, 0.86);
+    --menu-bg: rgba(243, 246, 251, 0.98);
+    --shadow: rgba(20, 28, 61, 0.18);
+    --court-line: rgba(55, 72, 138, 0.26);
+    --lamp-beam: rgba(255, 255, 255, 0.6); /* de día, los haces son rayos de sol sobre el cielo */
+  }
 }
 
 *,
@@ -82,16 +122,24 @@ h3 {
 }
 p {
   margin: 0;
+  text-wrap: pretty; /* evita una palabra sola en la última línea */
+}
+::selection {
+  background: var(--accent-fill);
+  color: var(--accent-ink);
+}
+html {
+  scrollbar-color: var(--surface-2) var(--bg-deep);
 }
 :focus-visible {
-  outline: 2px solid var(--lime);
+  outline: 2px solid var(--accent);
   outline-offset: 3px;
 }
 [id] {
   scroll-margin-top: calc(var(--nav-h) + 12px); /* las anclas no quedan tapadas por la nav */
 }
-.lime {
-  color: var(--lime);
+.accent {
+  color: var(--accent);
 }
 .muted {
   color: var(--muted);
@@ -109,6 +157,24 @@ p {
   letter-spacing: 0.28em;
   text-transform: uppercase;
   line-height: 1.4;
+}
+
+/* "Saltar al contenido": invisible hasta que se navega con el teclado (Tab) */
+.skip {
+  position: fixed;
+  z-index: 60;
+  top: 12px;
+  left: 12px;
+  padding: 12px 18px;
+  border-radius: 12px;
+  background: var(--accent-fill);
+  color: var(--accent-ink);
+  font-weight: 600;
+  text-decoration: none;
+  transform: translateY(-160%);
+}
+.skip:focus-visible {
+  transform: none;
 }
 
 /* ---------- BOTONES ---------- */
@@ -133,19 +199,19 @@ p {
 .btn:hover {
   transform: translateY(-2px);
 }
-.btn--lime {
-  background: var(--lime);
-  color: var(--lime-ink);
+.btn--accent {
+  background: var(--accent-fill);
+  color: var(--accent-ink);
 }
-.btn--lime:hover {
-  box-shadow: 0 8px 30px rgba(212, 255, 26, 0.3);
+.btn--accent:hover {
+  box-shadow: 0 8px 30px color-mix(in srgb, var(--accent-fill) 30%, transparent);
 }
 .btn--ghost {
-  border: 1px solid rgba(242, 245, 251, 0.3);
+  border: 1px solid var(--ghost-border);
   color: var(--ink);
 }
 .btn--ghost:hover {
-  border-color: var(--lime);
+  border-color: var(--accent);
 }
 
 /* ---------- NAV ---------- */
@@ -158,7 +224,7 @@ p {
   border-bottom: 1px solid transparent;
 }
 .nav--solid {
-  background: rgba(5, 8, 22, 0.82);
+  background: var(--nav-bg);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   border-bottom-color: var(--line);
@@ -180,6 +246,11 @@ p {
   text-decoration: none;
   flex-shrink: 0;
 }
+.brand__mark {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+}
 .brand__text {
   display: grid;
   line-height: 1.15;
@@ -196,8 +267,8 @@ p {
   font-family: var(--font-display);
   font-weight: 600;
   font-stretch: 125%;
-  font-size: 0.58rem;
-  letter-spacing: 0.24em;
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--muted);
 }
@@ -214,11 +285,11 @@ p {
   letter-spacing: 0.24em;
   text-transform: uppercase;
   text-decoration: none;
-  color: #b7c1d8;
+  color: var(--ink-soft);
   transition: color 0.2s ease;
 }
 .nav__links a:hover {
-  color: var(--lime);
+  color: var(--accent);
 }
 .nav__links .nav__cta-mobile {
   display: none;
@@ -238,7 +309,7 @@ p {
 }
 
 /* ---------- HERO ---------- */
-/* Portada de una pantalla: nombre del club centrado sobre azul noche con resplandor lima. */
+/* Portada de una pantalla: nombre del club centrado sobre azul noche, iluminado por los reflectores. */
 .hero {
   position: relative;
   isolation: isolate;
@@ -246,7 +317,7 @@ p {
   min-height: 100svh; /* svh: alto real en celulares, sin contar la barra del navegador */
   display: grid;
   overflow: hidden;
-  background: var(--bg-deep);
+  background: var(--hero-bg);
   color: var(--ink);
 }
 .hero__intro {
@@ -265,30 +336,93 @@ p {
   font-size: 0.86rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: #a9b4cc;
+  color: var(--ink-soft);
 }
 .hero__title {
   position: relative;
+  z-index: 1;
+  min-width: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   text-align: center;
-  gap: 20px;
+  gap: 24px;
   padding: calc(var(--nav-h) + 96px) var(--gutter-r) 64px var(--gutter-l);
 }
-/* Resplandor lima detrás del título */
-.hero__title::before {
-  content: '';
+
+/* Cancha en perspectiva detrás del título (CourtLines.jsx) */
+.court {
   position: absolute;
-  z-index: -1;
-  left: 50%;
-  top: 50%;
-  width: min(900px, 120vw);
-  height: 520px;
-  transform: translate(-50%, -50%);
-  background: radial-gradient(closest-side, rgba(170, 220, 20, 0.22), transparent);
+  z-index: 0;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  fill: none;
+  stroke: var(--court-line);
+  stroke-width: 2;
+  stroke-linejoin: round;
   pointer-events: none;
+  /* Detrás del texto la cancha casi no se ve; se marca abajo, donde pica la pelota */
+  -webkit-mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.25) 40%, rgba(0, 0, 0, 0.45) 62%, #000 78%);
+  mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.25) 40%, rgba(0, 0, 0, 0.45) 62%, #000 78%);
+}
+.court path {
+  vector-effect: non-scaling-stroke; /* mismo grosor de línea en cualquier pantalla */
+}
+.court__net {
+  stroke-width: 3;
+}
+.court__ball {
+  fill: var(--accent);
+  stroke: none;
+}
+.court__shadow {
+  fill: var(--shadow);
+  stroke: none;
+}
+
+/* Reflectores: lámpara en el borde de arriba + haz de luz que baja en diagonal hacia el
+   centro. El de la derecha es el mismo, espejado con scaleX(-1). */
+.light {
+  position: absolute;
+  z-index: 0;
+  top: 0;
+  bottom: 0;
+  left: 18%;
+  width: 40%;
+  pointer-events: none;
+}
+.light--right {
+  left: auto;
+  right: 18%;
+  transform: scaleX(-1);
+}
+.light__lamp {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 76px;
+  height: 7px;
+  border-radius: 0 0 4px 4px;
+  background: var(--lamp);
+}
+/* De día no hay reflectores: se apagan las lámparas y quedan los rayos de sol */
+@media (prefers-color-scheme: light) {
+  .light__lamp {
+    display: none;
+  }
+}
+.light__beam {
+  position: absolute;
+  inset: 4px 0 0;
+  transform-origin: top left;
+  clip-path: polygon(0 0, 76px 0, 100% 100%, 10% 100%);
+  background: var(--lamp-beam);
+  /* La luz se desvanece al bajar: arriba fuerte, a media altura ya casi no se ve */
+  -webkit-mask-image: linear-gradient(to bottom, #000, rgba(0, 0, 0, 0.35) 40%, transparent 72%);
+  mask-image: linear-gradient(to bottom, #000, rgba(0, 0, 0, 0.35) 40%, transparent 72%);
+  filter: blur(14px);
 }
 .hero__title h1 {
   font-size: clamp(3rem, 8.4vw, 7.4rem);
@@ -307,7 +441,7 @@ p {
 .hero__lead {
   max-width: 540px;
   font-size: 1.1rem;
-  color: #a9b4cc;
+  color: var(--ink-soft);
 }
 .hero__actions {
   display: flex;
@@ -320,17 +454,6 @@ p {
 /* ---------- SECCIONES ---------- */
 .section {
   padding-block: clamp(72px, 10vw, 128px);
-}
-.section--grid {
-  background-color: var(--bg);
-  background-image:
-    linear-gradient(var(--line) 1px, transparent 1px),
-    linear-gradient(90deg, var(--line) 1px, transparent 1px);
-  background-size: 120px 120px;
-  background-position: center top;
-}
-.section--grid {
-  --line: rgba(150, 170, 230, 0.07);
 }
 .wrap {
   max-width: 1232px;
@@ -346,9 +469,7 @@ p {
   gap: 24px 48px;
   margin-bottom: clamp(40px, 6vw, 72px);
 }
-.shead > div {
-  display: grid;
-  gap: 18px;
+.shead > h2 {
   max-width: 640px;
   min-width: 0;
 }
@@ -368,9 +489,8 @@ p {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   border: 1px solid var(--line);
-  --line: rgba(150, 170, 230, 0.16);
   border-radius: var(--radius);
-  background: rgba(11, 18, 48, 0.75);
+  background: var(--panel);
   overflow: hidden;
 }
 .service {
@@ -385,9 +505,6 @@ p {
 }
 .service + .service {
   border-left: 1px solid var(--line);
-}
-.service h3 {
-  margin-top: 18px;
 }
 .service p {
   color: var(--muted);
@@ -407,18 +524,18 @@ p {
   right: 0;
   bottom: 0;
   height: 2px;
-  background: var(--lime);
+  background: var(--accent);
   transform: scaleX(0);
   transform-origin: left;
   transition: transform 0.35s ease;
 }
 .service:hover,
 .service:focus-visible {
-  background: rgba(16, 26, 61, 0.7);
+  background: var(--hover-tint);
 }
 .service:hover .service__cta,
 .service:focus-visible .service__cta {
-  color: var(--lime);
+  color: var(--accent);
 }
 .service:hover::after,
 .service:focus-visible::after {
@@ -440,8 +557,14 @@ p {
   border-radius: var(--radius);
   overflow: visible;
 }
-.classes__photo > img,
-.classes__photo > .ph {
+.classes__frame {
+  width: 100%;
+  height: 100%;
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.classes__frame > img,
+.classes__frame > .ph {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -456,8 +579,8 @@ p {
   gap: 6px;
   padding: 20px 26px;
   border-radius: 16px;
-  background: var(--lime);
-  color: var(--lime-ink);
+  background: var(--accent-fill);
+  color: var(--accent-ink);
 }
 .classes__badge strong {
   font-family: var(--font-display);
@@ -492,8 +615,8 @@ p {
   width: 26px;
   height: 26px;
   border-radius: 50%;
-  border: 1px solid rgba(212, 255, 26, 0.55);
-  color: var(--lime);
+  border: 1px solid color-mix(in srgb, var(--accent) 55%, transparent);
+  color: var(--accent);
 }
 
 /* Galería tipo "bento" */
@@ -518,12 +641,6 @@ p {
 .tile--md {
   grid-column: span 5;
 }
-.tile:nth-child(3) {
-  align-self: start;
-}
-.tile:nth-child(2) {
-  align-self: start;
-}
 .tile--full {
   grid-column: 1 / -1;
   min-height: 420px;
@@ -541,6 +658,9 @@ p {
 .tile:hover > .ph {
   transform: scale(1.03);
 }
+.tile figcaption .accent {
+  color: #82c48e; /* fijo: sobre el degradé oscuro de la foto */
+}
 .tile figcaption {
   position: absolute;
   inset: auto 0 0;
@@ -548,7 +668,7 @@ p {
   gap: 6px;
   padding: 80px 24px 24px;
   background: linear-gradient(transparent, rgba(5, 8, 22, 0.88));
-  color: #c3cbe0;
+  color: #dfe5f2; /* fijo: va sobre el degradé oscuro de la foto en los dos temas */
   font-size: 0.95rem;
 }
 
@@ -564,36 +684,26 @@ p {
   font-family: var(--font-display);
   font-weight: 700;
   font-stretch: 125%;
-  font-size: 0.6rem;
-  letter-spacing: 0.24em;
+  font-size: 0.7rem;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
-  padding: 6px 10px;
+  padding: 6px 12px;
   border-radius: 999px;
   border: 1px dashed rgba(242, 245, 251, 0.4);
-  color: rgba(242, 245, 251, 0.75);
+  background: rgba(5, 8, 22, 0.78);
+  color: #f2f5fb;
 }
 .ph--clay {
-  background:
-    radial-gradient(ellipse at 50% 0%, rgba(255, 240, 210, 0.35), transparent 50%),
-    linear-gradient(transparent 58%, rgba(255, 255, 255, 0.18) 58% calc(58% + 2px), transparent calc(58% + 2px)),
-    linear-gradient(180deg, #0c1430 0%, #1b1c2e 45%, #6b3a1f 75%, #8a4a25 100%);
+  background: linear-gradient(180deg, #0c1430 0%, #1b1c2e 50%, #5a321d 100%);
 }
 .ph--blue {
-  background:
-    radial-gradient(circle at 80% 15%, rgba(255, 246, 214, 0.45), transparent 25%),
-    linear-gradient(180deg, #121c44 0%, #2b3a6e 40%, #c0704a 52%, #0c1430 54%, #15306f 100%);
+  background: linear-gradient(180deg, #121c44 0%, #1a2a5e 55%, #15306f 100%);
 }
 .ph--night {
-  background:
-    radial-gradient(circle at 25% 20%, rgba(255, 246, 214, 0.5), transparent 18%),
-    radial-gradient(circle at 70% 55%, rgba(255, 190, 110, 0.4), transparent 22%),
-    linear-gradient(180deg, #0f1638 0%, #1a2350 50%, #0b2a3d 100%);
+  background: linear-gradient(180deg, #0f1638 0%, #1a2350 50%, #0b2a3d 100%);
 }
 .ph--ball {
-  background:
-    radial-gradient(circle at 45% 55%, #d4e84a 0 16%, transparent 16.5%),
-    radial-gradient(circle at 62% 52%, rgba(190, 110, 60, 0.6), transparent 30%),
-    linear-gradient(180deg, #0f1638 0%, #1b2246 45%, #7a4422 75%, #93522a 100%);
+  background: linear-gradient(180deg, #0f1638 0%, #1b2246 50%, #6a3b1f 100%);
 }
 
 /* Reseñas */
@@ -604,13 +714,12 @@ p {
   padding: 16px 24px;
   border-radius: 16px;
   border: 1px solid var(--line);
-  --line: rgba(150, 170, 230, 0.2);
   text-decoration: none;
   transition: border-color 0.2s ease, transform 0.2s ease;
 }
 .rating:hover,
 .rating:focus-visible {
-  border-color: var(--lime);
+  border-color: var(--accent);
   transform: translateY(-2px);
 }
 .rating__score {
@@ -618,7 +727,7 @@ p {
   font-weight: 700;
   font-size: 2rem;
   line-height: 1;
-  color: var(--lime);
+  color: var(--accent);
   font-variant-numeric: tabular-nums;
 }
 .rating__meta {
@@ -634,7 +743,7 @@ p {
   color: var(--ink);
 }
 .rating:hover .rating__cta {
-  color: var(--lime);
+  color: var(--accent);
 }
 .rating--compact {
   padding: 10px 16px;
@@ -644,7 +753,8 @@ p {
   font-size: 1.4rem;
 }
 .rating--compact .label {
-  font-size: 0.56rem;
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
 }
 .rating--compact .rating__cta {
   font-size: 0.72rem;
@@ -652,41 +762,109 @@ p {
 .stars {
   display: inline-flex;
   gap: 3px;
-  color: var(--lime);
+  color: var(--accent);
 }
 .stars .off {
-  color: rgba(242, 245, 251, 0.2);
+  color: var(--star-off);
 }
-.reviews {
+/* Cinta de reseñas estilo Google (ReviewsCarousel.jsx) */
+.marquee {
+  display: grid;
+  gap: 18px;
+}
+.marquee__viewport {
+  overflow: hidden;
+  /* los bordes se desvanecen para que las tarjetas entren y salgan suave */
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+}
+.marquee__track {
+  --gap: 22px;
   list-style: none;
   margin: 0;
-  padding: 0;
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 22px;
-}
-.review {
+  padding: 4px 0;
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  gap: 40px;
-  padding: 36px 32px 32px;
-  border-radius: var(--radius);
+  gap: var(--gap);
+  width: max-content;
+  animation: marquee var(--marquee-duration, 40s) linear infinite;
+}
+/* Se frena con el mouse encima, al tocar/navegar con Tab, o con el botón de pausa */
+.marquee__viewport:hover .marquee__track,
+.marquee__viewport:focus-within .marquee__track,
+.marquee.is-paused .marquee__track {
+  animation-play-state: paused;
+}
+@keyframes marquee {
+  to {
+    /* media cinta + medio espacio: la segunda copia queda justo donde empezó la primera */
+    transform: translateX(calc(-50% - var(--gap) / 2));
+  }
+}
+.marquee__toggle {
+  justify-self: end;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 16px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--muted);
+  font: inherit;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+.marquee__toggle:hover {
+  color: var(--ink);
+  border-color: var(--ghost-border);
+}
+.greview {
+  flex: 0 0 340px;
+  display: grid;
+  align-content: start;
+  gap: 14px;
+  padding: 24px 24px 26px;
+  border-radius: 16px;
   border: 1px solid var(--line);
   background: var(--surface);
-  min-width: 0;
 }
-.review blockquote {
-  margin: 0;
-  font-size: 1rem;
-  line-height: 1.55;
-}
-.review__foot {
+.greview__head {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   gap: 12px;
+}
+.greview__avatar {
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  color: #fff;
+  font-weight: 600;
+  font-size: 1.05rem;
+}
+.greview__who {
+  display: grid;
+  line-height: 1.3;
+  min-width: 0;
+}
+.greview__who strong {
+  font-weight: 600;
+}
+.greview__who span {
+  font-size: 0.82rem;
   color: var(--muted);
+}
+.greview .stars,
+.rating .stars {
+  color: #fbbc04; /* amarillo de las estrellas de Google, en los dos temas */
+}
+.greview p {
+  font-size: 0.95rem;
+  line-height: 1.55;
 }
 
 /* Reservas (próximamente) */
@@ -706,9 +884,26 @@ p {
   background: var(--surface);
 }
 .booking__steps li {
+  position: relative;
   display: flex;
   gap: 20px;
   align-items: flex-start;
+}
+.booking__ring {
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  border: 1px solid color-mix(in srgb, var(--accent) 65%, transparent);
+}
+/* Tramo de línea que baja desde el número de un paso hasta el siguiente */
+.booking__seg {
+  position: absolute;
+  left: 21.5px;
+  top: 44px;
+  bottom: -28px; /* = gap entre pasos */
+  width: 1px;
+  background: color-mix(in srgb, var(--accent) 45%, transparent);
+  transform-origin: top;
 }
 .booking__steps h3 {
   font-size: 1.1rem;
@@ -718,6 +913,7 @@ p {
   color: var(--muted);
 }
 .booking__n {
+  position: relative; /* queda por encima de la línea */
   flex-shrink: 0;
   display: grid;
   place-items: center;
@@ -728,7 +924,7 @@ p {
   border: 1px solid var(--line);
   font-family: var(--font-display);
   font-weight: 800;
-  color: var(--lime);
+  color: var(--accent);
 }
 .booking__card {
   display: grid;
@@ -737,8 +933,8 @@ p {
   gap: 16px;
   padding: 36px;
   border-radius: var(--radius);
-  border: 1px solid rgba(212, 255, 26, 0.35);
-  background: linear-gradient(160deg, rgba(212, 255, 26, 0.07), transparent 60%), var(--surface);
+  border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
+  background: linear-gradient(160deg, color-mix(in srgb, var(--accent) 7%, transparent), transparent 60%), var(--surface);
 }
 .booking__card p {
   color: var(--muted);
@@ -748,13 +944,13 @@ p {
   font-family: var(--font-display);
   font-weight: 700;
   font-stretch: 125%;
-  font-size: 0.6rem;
-  letter-spacing: 0.24em;
+  font-size: 0.7rem;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
   padding: 6px 12px;
   border-radius: 999px;
-  background: rgba(212, 255, 26, 0.12);
-  color: var(--lime);
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  color: var(--accent);
 }
 
 /* Footer */
@@ -777,8 +973,12 @@ p {
 .footer__grid .label {
   color: var(--muted);
 }
-.footer__grid .label.lime {
-  color: var(--lime);
+.footer__grid .label.accent {
+  color: var(--accent);
+}
+.footer__logo {
+  width: 112px;
+  height: auto;
 }
 .footer__name {
   font-size: 1.6rem;
@@ -795,7 +995,7 @@ p {
   margin: 0;
   padding: 0;
   display: grid;
-  gap: 16px;
+  gap: 4px;
 }
 .contact li {
   display: flex;
@@ -804,14 +1004,17 @@ p {
   font-size: 0.95rem;
 }
 .contact svg {
-  color: var(--lime);
+  color: var(--accent);
   flex-shrink: 0;
 }
 .contact a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px; /* área cómoda para tocar en celular */
   text-decoration: none;
 }
 .contact a:hover {
-  color: var(--lime);
+  color: var(--accent);
 }
 .hours {
   width: 100%;
@@ -869,14 +1072,13 @@ p {
   width: 62px;
   height: 62px;
   border-radius: 50%;
-  background: var(--lime);
-  color: var(--lime-ink);
-  box-shadow: 0 0 0 8px rgba(212, 255, 26, 0.16), 0 12px 30px rgba(0, 0, 0, 0.4);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  background: var(--accent-fill);
+  color: var(--accent-ink);
+  box-shadow: 0 0 0 8px color-mix(in srgb, var(--accent-fill) 16%, transparent), 0 12px 30px var(--shadow);
+  transition: box-shadow 0.2s ease; /* la escala al pasar el mouse la maneja Motion */
 }
 .wa-fab:hover {
-  transform: scale(1.06);
-  box-shadow: 0 0 0 12px rgba(212, 255, 26, 0.18), 0 12px 30px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 0 0 12px color-mix(in srgb, var(--accent-fill) 18%, transparent), 0 12px 30px var(--shadow);
 }
 
 /* ---------- RESPONSIVE ---------- */
@@ -902,7 +1104,7 @@ p {
     flex-direction: column;
     gap: 0;
     padding: 8px var(--gutter-r) 24px var(--gutter-l);
-    background: rgba(5, 8, 22, 0.97);
+    background: var(--menu-bg);
     border-bottom: 1px solid var(--line);
     transform: translateY(-8px);
     opacity: 0;
@@ -924,7 +1126,7 @@ p {
     margin-top: 20px;
     padding: 0 28px;
     border-bottom: 0;
-    color: var(--lime-ink);
+    color: var(--accent-ink);
   }
   .services {
     grid-template-columns: 1fr;
@@ -954,9 +1156,6 @@ p {
     grid-column: 1 / -1;
     min-height: 320px;
   }
-  .reviews {
-    grid-template-columns: 1fr;
-  }
   .footer__grid {
     grid-template-columns: 1fr 1fr;
   }
@@ -978,7 +1177,16 @@ p {
     right: var(--gutter-r);
   }
   .hero__title h1 {
-    font-size: clamp(2.7rem, 13vw, 4rem);
+    font-size: clamp(2.2rem, 11vw, 4rem); /* "CLUB SAQUE" entra en una línea desde 320px */
+  }
+  .light {
+    opacity: 0.65; /* en pantallas angostas los haces tapan más: más suaves */
+  }
+  .light__lamp {
+    width: 52px;
+  }
+  .light__beam {
+    clip-path: polygon(0 0, 52px 0, 100% 100%, 10% 100%);
   }
   .hero__lead {
     font-size: 1rem;
@@ -991,6 +1199,20 @@ p {
   }
   .checks {
     grid-template-columns: 1fr;
+  }
+  .greview {
+    flex-basis: 280px;
+  }
+  .booking__steps,
+  .booking__card {
+    padding: 28px 22px;
+  }
+  .btn {
+    max-width: 100%;
+    padding: 0 20px;
+    letter-spacing: 0.14em;
+    white-space: normal; /* en pantallas angostas el texto del botón puede bajar de línea */
+    text-align: center;
   }
   .footer__grid {
     grid-template-columns: 1fr;
@@ -1011,6 +1233,21 @@ p {
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
+  }
+  /* Reseñas quietas: fila que se desliza con el dedo, sin copias repetidas ni botón de pausa */
+  .marquee__track {
+    animation: none;
+  }
+  .marquee__viewport {
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+  }
+  .greview {
+    scroll-snap-align: start;
+  }
+  .greview[aria-hidden],
+  .marquee__toggle {
+    display: none;
   }
   .btn,
   .wa-fab,

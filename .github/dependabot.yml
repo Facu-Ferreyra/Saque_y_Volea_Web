@@ -1,0 +1,13 @@
+# GitHub revisa las dependencias de npm una vez por semana y abre un Pull Request
+# cuando hay una versión nueva o un arreglo de seguridad. Vos decidís si lo aceptás.
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    groups:
+      # Las actualizaciones chicas (sin cambios que rompan) llegan juntas en un solo PR.
+      menores:
+        update-types: [minor, patch]

@@ -9,10 +9,9 @@ export const CLUB = {
   address: 'Patricias Mendocinas 305, Belén de Escobar',
   phoneDisplay: '+54 348 436-1873',
   // Formato para wa.me: código de país + área + número, sin "+", espacios ni guiones.
-  // OJO: es el teléfono publicado en Google Maps. Confirmá con el club que tenga WhatsApp.
-  // Si fuera un celular, en Argentina va con un 9 después del 54 (ej: 5493484...).
+  // Es el mismo número del link de WhatsApp del Instagram del club (verificado).
   whatsapp: '543484361873',
-  instagram: 'clubsaqueyvolea', // confirmar que la cuenta exista
+  instagram: 'clubsaqueyvolea', // cuenta oficial: "Tenis y Padel en Escobar"
   mapsUrl:
     'https://www.google.com/maps/place/Club+Saque+y+Volea/@-34.3438241,-58.7832867,17z/data=!4m6!3m5!1s0x95bb611550a81985:0x8fb91ad072bd4791!8m2!3d-34.3446503!4d-58.7819666!16s%2Fg%2F11rgh4pz4h',
   // Place ID de Google del club: con él se arma el link directo para dejar una reseña.

@@ -42,6 +42,16 @@ export const Chat = (p) => (
     <path d="M8.5 10.5h7M8.5 13.5h4.5" />
   </svg>
 )
+export const Pause = (p) => (
+  <svg {...base} width="14" height="14" {...p}>
+    <path d="M8 5v14M16 5v14" />
+  </svg>
+)
+export const Play = (p) => (
+  <svg {...base} width="14" height="14" {...p}>
+    <path d="M7 5l12 7-12 7z" />
+  </svg>
+)
 export const Menu = (p) => (
   <svg {...base} width="22" height="22" {...p}>
     <path d="M4 7h16M4 12h16M4 17h16" />
@@ -65,11 +75,3 @@ export function Stars({ count = 5, size = 14 }) {
     </span>
   )
 }
-
-/** Marca del club: círculo con la pelota en el centro. */
-export const BallMark = () => (
-  <svg width="34" height="34" viewBox="0 0 34 34" aria-hidden="true">
-    <circle cx="17" cy="17" r="15.5" fill="none" stroke="var(--lime)" strokeOpacity="0.55" strokeWidth="1.5" />
-    <circle cx="17" cy="17" r="5.5" fill="var(--lime)" />
-  </svg>
-)
