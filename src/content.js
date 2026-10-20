@@ -48,12 +48,12 @@ export const GALLERY = [
   { label: 'Vista aérea', text: 'Tres canchas de tenis y una de pádel', src: '/fotos/vista-aerea.webp', size: 'full', tone: 'blue' },
 ]
 
-// Reseñas de Google: son de personas reales. Lo correcto es pedirles permiso
-// para mostrar su nombre, o quitar este array y dejar solo el puntaje.
+// Reseñas de Google: son de personas reales. Por privacidad se muestra solo el nombre
+// y la inicial del apellido (decisión del club).
 export const REVIEWS = [
-  { quote: 'Excelente servicio, totalmente recomendable. La cancha perfecta.', author: 'Maximiliano Carrizo', stars: 5 },
-  { quote: 'Las canchas están buenísimas y la iluminación es excelente. ¡Totalmente recomendable!', author: 'Roberto Salom', stars: 5 },
-  { quote: 'Muy buenas canchas de tenis y un ambiente excelente para disfrutar.', author: 'Dario M. Ametrano', stars: 5 },
+  { quote: 'Excelente servicio, totalmente recomendable. La cancha perfecta.', author: 'Maximiliano C.', stars: 5 },
+  { quote: 'Las canchas están buenísimas y la iluminación es excelente. ¡Totalmente recomendable!', author: 'Roberto S.', stars: 5 },
+  { quote: 'Muy buenas canchas de tenis y un ambiente excelente para disfrutar.', author: 'Darío A.', stars: 5 },
 ]
 
 export const BOOKING_STEPS = [

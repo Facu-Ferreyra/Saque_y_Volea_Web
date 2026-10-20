@@ -89,11 +89,24 @@ Reglas:
 - "Reservar turno" → WhatsApp con mensaje precargado (`WA_MESSAGES`). Cuando exista la
   reserva online, se cambia el destino en un solo lugar.
 
+## Posibles implementaciones (evaluadas, no hechas)
+- **Panel de administración (`/admin`)** para que el club gestione actividades, clases, precios, horarios,
+  reseñas y el orden/visibilidad de las secciones; al guardar, la página principal se republica sola.
+  Opciones: Supabase + panel propio (recomendada: sirve de base para la reserva online), Sanity (CMS listo)
+  o Tina/Decap (contenido en GitHub).
+- **Reseñas de Google automáticas:** la API (Places) da como máximo 5 reseñas, obliga a mostrar el nombre del
+  autor tal como figura en Google y el logo de Google, y no permite guardarlas en caché (una consulta por visita,
+  con cupo gratis mensual y luego pago). Recomendado: puntaje y cantidad automáticos + reseñas cargadas desde el panel.
+- **Mejoras del análisis de diseño (20/32, ver `.impeccable/critique/`):** franja de datos rápidos (precio,
+  superficie, duración del turno, luz), armador de pedido por WhatsApp (deporte/día/hora → mensaje listo),
+  mapa de las 3+1 canchas en la sección Canchas, segundo botón del hero = clases, textos chicos a ≥13px.
+- **Dominio propio:** Vercel → Settings → Domains (sin cambios de código).
+
 ## Pendiente con el club
 - [x] WhatsApp +54 348 436-1873 (es el mismo del link del Instagram del club).
 - [x] Fotos reales en `public/fotos/` (WebP). Falta una foto de una clase para la sección Clases.
 - [x] Canchas: 3 de tenis y 1 de pádel.
-- [ ] Permiso de las personas cuyas reseñas se muestran con nombre (array `REVIEWS`).
+- [x] Reseñas: se muestra nombre + inicial del apellido.
 - [x] Instagram: @clubsaqueyvolea.
 - [ ] Confirmar actividades, duración de turnos y si hay bar (hoy es contenido de ejemplo).
 - [x] Logo y favicon (`public/`). Originales: `marca.png` sale de Favicon.jpeg y `logo.webp` de Logo.jpeg.
